@@ -1,0 +1,466 @@
+[901]
+NAME="Nothing"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo ''
+[901-END]
+
+[902]
+NAME="Exec two command"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'ls /etc'
+  echo 'cat /etc/resolv.conf'
+[902-END]
+
+[903]
+NAME="Testing with /usr/bin PATH"
+SETUP="export TERM=xterm ; PATH='/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'pwd'
+[903-END]
+
+[904]
+NAME="Testing with /bin PATH"
+SETUP="export TERM=xterm ; PATH='/bin'"
+CLEAN=""
+TESTS=
+  echo 'pwd'
+[904-END]
+
+[905]
+NAME="run commands"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'cat /etc/resolv.conf'
+  sleep 0.5
+  echo 'ls -l /etc'
+  sleep 0.5
+  echo 'pwd'
+[905-END]
+
+[906]
+NAME="setenv and unsetenv"
+SETUP="/usr/bin/env > .lstenv ; while read varenv ; do unset $varenv ; done < <(/bin/cat .lstenv | /usr/bin/cut -f1 -d=) ; export PATH=/bin:/usr/bin ; export _=ls ; export LS_COLORS=RID ; export MYBG=4 ; export LVL=4 ; export NOTE=2"
+CLEAN="while read varenv ; do export "$varenv" 2>/dev/null ; done  < <(/bin/cat .lstenv) ; /bin/rm -f .lstenv"
+TESTS=
+  echo 'unsetenv HOSTTYPE'
+  echo 'unsetenv VENDOR'
+  echo 'unsetenv OSTYPE'
+  echo 'unsetenv MACHTYPE'
+  echo 'unsetenv SHLVL'
+  echo 'unsetenv PWD'
+  echo 'unsetenv LOGNAME'
+  echo 'unsetenv USER'
+  echo 'unsetenv GROUP'
+  echo 'unsetenv HOST'
+  echo 'unsetenv REMOTEHOST'
+  echo 'unsetenv _'
+  echo 'unsetenv LS_COLORS'
+  echo 'unsetenv NOTE'
+  echo 'setenv titi'
+  echo 'setenv tata coucou'
+  echo 'env'
+  echo '/usr/bin/env'
+  echo 'setenv var1 val1'
+  echo 'setenv var2 val2'
+[906-END]
+
+[907]
+NAME="builtin cd"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'cd ..'
+  echo 'ls -l'
+  echo 'cd /usr'
+  echo 'ls -l'
+[907-END]
+
+[908]
+NAME="many tab and space"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo -e "\t\t    ls\t     \t-l    \t\t  \t -a /usr   \t\t"
+[908-END]
+
+[909]
+NAME="Launch DivZero program with core dump"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo "./tests/my_divzero"
+[909-END]
+
+[910]
+NAME="Launch SegFault program without core dump"
+SETUP="ulimit -c 0 ; export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo "./tests/my_segfault"
+[910-END]
+
+[911]
+NAME="Testing simple pipe"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo "ls -l /etc | grep sh"
+[911-END]
+
+[912]
+NAME="A pipe with a builtin ?"
+SETUP="export VAR1=VALEUR1 ; OLDPATH=$PATH ; PATH='/usr/bin'"
+CLEAN="PATH=$OLDPATH"
+TESTS=
+  echo 'setenv | /bin/grep VAR1'
+  echo '/bin/ls | cd /usr'
+  echo 'ls -l'
+  echo 'exit 45|cat /etc/resolv.conf'
+[912-END]
+
+[913]
+NAME="Simple separator &&"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'ls && pwd'
+[913-END]
+
+[914]
+NAME="Separator && not valid"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo './tests/my_segfault && pwd'
+[914-END]
+
+[915]
+NAME="Separator && with ;"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'false ls && pwd ; echo test ; ls -l /etc | grep sh'
+[915-END]
+
+[916]
+NAME="Simple || valid"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo './tests/my_segfault || pwd'
+[916-END]
+
+[917]
+NAME="Separator || not valid"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'ls ; echo test || pwd'
+[917-END]
+
+[918]
+NAME="Medium separators && and ||"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo './tests/my_segfault || pwd && ls || pwd'
+[918-END]
+
+[919]
+NAME="Complex separators && and ||"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo './tests/my_floating_exeption || pwd && ls || env && which pwd; pwd'
+[919-END]
+
+[920]
+NAME="Builtin which -> one param"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'which ls'
+[920-END]
+
+[921]
+NAME="Builtin which -> many param"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'which cd ls pwd'
+[921-END]
+
+[922]
+NAME="Builtin where -> one param"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'where ls'
+[922-END]
+
+[923]
+NAME="Builtin where -> many param"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'where cd ls pwd'
+[923-END]
+
+[924]
+NAME="without env"
+SETUP="env -i"
+CLEAN=""
+TESTS=
+  echo 'ls'
+[924-END]
+
+[925]
+NAME="Simple >>"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN="rm test.txt"
+TESTS=
+  echo 'ls >> test.txt'
+  echo 'cat test.txt'
+[925-END]
+
+[926]
+NAME="Simple >"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN="rm test.txt"
+TESTS=
+  echo 'ls > test.txt'
+  echo 'cat test.txt'
+[926-END]
+
+[927]
+NAME="Simple <"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN="rm test.txt"
+TESTS=
+  echo 'ls > test.txt'
+  echo 'grep c < test.txt'
+[927-END]
+
+[928]
+NAME="Simple <<"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'grep c << EOF'
+  echo 'things'
+  echo 'chin'
+  echo 'tcsh'
+  echo 'EOF'
+[928-END]
+
+[929]
+NAME="Simple ;"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'ls; pwd'
+[929-END]
+
+[930]
+NAME="Simple ; V2"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'ls;pwd'
+[930-END]
+
+[931]
+NAME="Only ;"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo ';'
+[931-END]
+
+[932]
+NAME="Only ; * 5"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo ';;;;;'
+[932-END]
+
+[933]
+NAME="; without after command"
+SETUP="export TERM=xterm ; PATH='/random'"
+CLEAN=""
+TESTS=
+  echo 'ls;'
+[933-END]
+
+[934]
+NAME="; with only a space after the ;"
+SETUP="export TERM=xterm ; PATH='/random'"
+CLEAN=""
+TESTS=
+  echo 'ls; '
+[934-END]
+
+[935]
+NAME="PATH nothing"
+SETUP="export TERM=xterm ; PATH='/random'"
+CLEAN=""
+TESTS=
+  echo 'ls'
+[935-END]
+
+[936]
+NAME="PATH NULL"
+SETUP="export TERM=xterm"
+CLEAN=""
+TESTS=
+  echo 'unsetenv PATH'
+  echo 'ls'
+[936-END]
+
+[937]
+NAME="| without spaces"
+SETUP="export TERM=xterm"
+CLEAN=""
+TESTS=
+  echo 'ls|cat -e'
+[937-END]
+
+[938]
+NAME="| with one space"
+SETUP="export TERM=xterm"
+CLEAN=""
+TESTS=
+  echo 'ls |cat -e'
+[938-END]
+
+[939]
+NAME="| with one space V2"
+SETUP="export TERM=xterm"
+CLEAN=""
+TESTS=
+  echo 'ls| cat -e'
+[939-END]
+
+[940]
+NAME="> without spaces"
+SETUP="export TERM=xterm"
+CLEAN="rm test_940.txt"
+TESTS=
+  echo 'ls>test_940.txt'
+  echo 'cat test_940.txt'
+[940-END]
+
+[941]
+NAME="> with one space"
+SETUP="export TERM=xterm"
+CLEAN="rm test_941.txt"
+TESTS=
+  echo 'ls >test_941.txt'
+  echo 'cat test_941.txt'
+[941-END]
+
+[942]
+NAME="> with one space V2"
+SETUP="export TERM=xterm"
+CLEAN="rm test_942.txt"
+TESTS=
+  echo 'ls> test_942.txt'
+  echo 'cat test_942.txt'
+[942-END]
+
+[943]
+NAME=">> without spaces"
+SETUP="export TERM=xterm"
+CLEAN="rm test_943.txt"
+TESTS=
+  echo 'ls>>test_943.txt'
+  echo 'cat test_943.txt'
+[943-END]
+
+[944]
+NAME=">> with one space"
+SETUP="export TERM=xterm"
+CLEAN="rm test_944.txt"
+TESTS=
+  echo 'ls >>test_944.txt'
+  echo 'cat test_944.txt'
+[944-END]
+
+[945]
+NAME=">> with one space V2"
+SETUP="export TERM=xterm"
+CLEAN="rm test_945.txt"
+TESTS=
+  echo 'ls>> test_945.txt'
+  echo 'cat test_945.txt'
+[945-END]
+
+[946]
+NAME="Only |"
+SETUP="export TERM=xterm"
+CLEAN=""
+TESTS=
+  echo '|'
+[946-END]
+
+[947]
+NAME="Only >"
+SETUP="export TERM=xterm"
+CLEAN=""
+TESTS=
+  echo '>'
+[947-END]
+
+[948]
+NAME="Only <"
+SETUP="export TERM=xterm"
+CLEAN=""
+TESTS=
+  echo '<'
+[948-END]
+
+[949]
+NAME="; command"
+SETUP="export TERM=xterm"
+CLEAN=""
+TESTS=
+  echo '; ls'
+[949-END]
+
+[950]
+NAME="Only &"
+SETUP="export TERM=xterm"
+CLEAN=""
+TESTS=
+  echo '&'
+[950-END]
+
+#[937]
+#NAME="simple alias"
+#SETUP="export TERM=xterm"
+#CLEAN=""
+#TESTS=
+#  echo 'alias'
+#  echo 'alias ll ls -l'
+#  echo 'alias'
+#[937-END]
+
+#[937]
+#NAME="Simple history"
+#SETUP="export TERM=xterm ; set histfile = test.log"
+#CLEAN="rm ./test.log ; set histfile = .history"
+#TESTS=
+#  echo 'pwd'
+#  echo 'ls'
+#  echo 'history'
+#  echo 'ls -l; pwd'
+#  echo 'history'
+#  echo '!l'
+#[937-END]

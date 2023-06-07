@@ -1,0 +1,4 @@
+builtin_array.c
+builtin_array.o
+minishell.h
+test
